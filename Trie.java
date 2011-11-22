@@ -15,7 +15,7 @@ public class Trie implements StringStorage {
 		int key;
 		char letter;
 		Node parent;
-		ArrayList <Node> children = new ArrayList<Node>();
+		ArrayList<Node> children = new ArrayList<Node>();
 
 		public Node() {
 
@@ -28,31 +28,54 @@ public class Trie implements StringStorage {
 		}
 	}
 
+	public void topLevelChildren(Node node){
+		for (Node n : node.children){
+			System.out.println(n.letter);
+		}
+	}
+	
 	public static void main(String[] args) {
 		Trie trie = new Trie();
-		String[] words = { "abs", "bucket", "buck", "apple", "ape", "al",
-				"charlie" };
+		String[] words = { 
+				"abu", 
+				"abs",
+				"apogee",
+				"bucket", 
+				"buck", 
+				"apple", 
+				"ape", 
+				"al",
+				"charlie",
+				"al",
+				"at",
+				"an",
+				"as",
+				"ab"
+				};
 
 		for (String s : words) {
 			trie.insert(s, trie.root);
-			System.out.print(trie.preorder(trie.root, new StringBuffer()));
-			System.out.println("\n------------");
+			// System.out.println("\n------------");
 
 		}
+		System.out.print(trie.preorder(trie.root, new StringBuffer()));
+//		trie.topLevelChildren(trie.root.children.get(0));
 
 	}
+	
 
 	// preorder walk
 	public StringBuffer preorder(Node node, StringBuffer sb) {
-
 		if (node.children.size() > 0) {
 			for (Node n : node.children) {
-				sb.append(n.letter);
+				sb.append(node.letter);
+				System.out.println("---calling preorder for node("+n.letter+"), which is node("+node.letter+").children["+node.children.indexOf(n)+"] ");
 				preorder(n, sb);
 			}
 		} else {
-			// sb.append(node.letter);
-			sb.append(new String("-|>"));
+			sb.append(node.letter);
+			sb.append(new String("-|>\n"));
+//			System.out.println("end of root<->leaf path");
 		}
 		return sb;
 	}
@@ -61,7 +84,7 @@ public class Trie implements StringStorage {
 		boolean found = false;
 		int i = 0;
 		char cti = s.charAt(0);
-		
+
 		while (node.children.size() > i && node.children.get(i).letter <= cti) {
 			if (cti == node.children.get(i).letter) {
 				found = true;
@@ -77,7 +100,8 @@ public class Trie implements StringStorage {
 			}
 		} else {// create a new node
 			Node n = new Node(cti, node);
-			node.children.add(i,n);
+			node.children.add(i, n);
+			System.out.println("insert("+n.letter+") at n.children["+i+"] for node.letter = \'"+node.letter+"\'");
 			if (s.length() > 1) {
 				String newS = s.substring(1);
 				insert(newS, n);
