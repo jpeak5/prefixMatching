@@ -56,11 +56,8 @@ public class Trie implements StringStorage {
 
 		for (String s : words) {
 			trie.insert(s, trie.root);
-			// System.out.println("\n------------");
-
 		}
 		System.out.print(trie.preorder(trie.root, new StringBuffer()));
-//		trie.topLevelChildren(trie.root.children.get(0));
 
 	}
 	
@@ -71,19 +68,16 @@ public class Trie implements StringStorage {
 				preorder(n, sb);
 			}
 		} else {
-			sb.append(bottomsUp(node)+"\n");
+			StringBuffer word = new StringBuffer();
+			while(node.parent!=null){
+				word.append(node.letter);
+				node = node.parent;
+			}
+			sb.append(word.reverse()+"\n");
 		}
 		return sb;
 	}
 	
-	public StringBuffer bottomsUp(Node n){
-		StringBuffer sb = new StringBuffer();
-		while(n.parent!=null){
-			sb.append(n.letter);
-			n = n.parent;
-		}
-		return sb.reverse();
-	}
 
 	public void insert(String s, Node node) {
 		boolean found = false;
@@ -106,7 +100,7 @@ public class Trie implements StringStorage {
 		} else {// create a new node
 			Node n = new Node(cti, node);
 			node.children.add(i, n);
-			System.out.println("insert("+n.letter+") at n.children["+i+"] for node.letter = \'"+node.letter+"\'");
+//			System.out.println("insert("+n.letter+") at n.children["+i+"] for node.letter = \'"+node.letter+"\'");
 			if (s.length() > 1) {
 				String newS = s.substring(1);
 				insert(newS, n);
