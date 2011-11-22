@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Trie implements StringStorage {
 
 	Node root = null;
+	int insertionCount = 0;
 
 	public Trie() {
 		this.root = new Node();
@@ -14,7 +15,7 @@ public class Trie implements StringStorage {
 		int key;
 		char letter;
 		Node parent;
-		ArrayList<Node> children = new ArrayList<Node>();
+		ArrayList <Node> children = new ArrayList<Node>();
 
 		public Node() {
 
@@ -29,14 +30,14 @@ public class Trie implements StringStorage {
 
 	public static void main(String[] args) {
 		Trie trie = new Trie();
-		String[] words = {"abs", "bucket", "buck", "apple", "ape", "al", "charlie"};
-		
-		
-		for(String s : words){
-			trie.insert(s);
+		String[] words = { "abs", "bucket", "buck", "apple", "ape", "al",
+				"charlie" };
+
+		for (String s : words) {
+			trie.insert(s, trie.root);
 			System.out.print(trie.preorder(trie.root, new StringBuffer()));
 			System.out.println("\n------------");
-			
+
 		}
 
 	}
@@ -50,39 +51,39 @@ public class Trie implements StringStorage {
 				preorder(n, sb);
 			}
 		} else {
-//			sb.append(node.letter);
+			// sb.append(node.letter);
 			sb.append(new String("-|>"));
 		}
 		return sb;
 	}
 
-	@Override
-	public void insert(String s) {
-		char[] cha = s.toCharArray();
-		Node node = root;
-		for (char c : cha) {
-			boolean found = false;
-			int i = 0;
-			if (node.children.size() >0) {
-				while (i < node.children.size() - 1 && node.children.get(i).letter < c) {
-					if (node.children.get(i).letter == c) {
-						found = true;
-						break;
-					} else {
-						i++;
-					}
-				}
-				if (found == true) {
-					node = node.children.get(i);
-				} else {
-					node.children.add(i, new Node(c, node));
-					node = node.children.get(i);
-				}
-			}else{
-				node.children.add(new Node(c, node));
-				node = node.children.get(0);
+	public void insert(String s, Node node) {
+		boolean found = false;
+		int i = 0;
+		char cti = s.charAt(0);
+		
+		while (node.children.size() > i && node.children.get(i).letter <= cti) {
+			if (cti == node.children.get(i).letter) {
+				found = true;
+				break;
+			}
+			i++;
+		}
+		if (found == true) {// continue to try the insertion on the found
+			// node
+			if (s.length() > 1) {
+				String newS = s.substring(1);
+				insert(newS, node.children.get(i));
+			}
+		} else {// create a new node
+			Node n = new Node(cti, node);
+			node.children.add(i,n);
+			if (s.length() > 1) {
+				String newS = s.substring(1);
+				insert(newS, n);
 			}
 		}
+
 	}
 
 	public int find(char c) {
