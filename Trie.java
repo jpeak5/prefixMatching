@@ -47,6 +47,7 @@ public class Trie implements StringStorage {
 			}
 		} else {
 			sb.append(node.letter);
+			sb.append(new String("-|>"));
 		}
 		return sb;
 	}
