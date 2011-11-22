@@ -29,11 +29,15 @@ public class Trie implements StringStorage {
 
 	public static void main(String[] args) {
 		Trie trie = new Trie();
-		trie.insert("apple");
-		trie.insert("ape");
-		trie.insert("a");
-		trie.insert("abs");
-		System.out.print(trie.preorder(trie.root, new StringBuffer()));
+		String[] words = {"abs", "bucket", "buck", "apple", "ape", "al", "charlie"};
+		
+		
+		for(String s : words){
+			trie.insert(s);
+			System.out.print(trie.preorder(trie.root, new StringBuffer()));
+			System.out.println("\n------------");
+			
+		}
 
 	}
 
@@ -46,7 +50,7 @@ public class Trie implements StringStorage {
 				preorder(n, sb);
 			}
 		} else {
-			sb.append(node.letter);
+//			sb.append(node.letter);
 			sb.append(new String("-|>"));
 		}
 		return sb;
