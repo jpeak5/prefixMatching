@@ -38,6 +38,7 @@ public class Trie implements StringStorage {
 		Trie trie = new Trie();
 		String[] words = { 
 				"abu", 
+				"a",
 				"abs",
 				"apogee",
 				"bucket", 
@@ -63,21 +64,25 @@ public class Trie implements StringStorage {
 
 	}
 	
-
 	// preorder walk
 	public StringBuffer preorder(Node node, StringBuffer sb) {
 		if (node.children.size() > 0) {
 			for (Node n : node.children) {
-				sb.append(node.letter);
-				System.out.println("---calling preorder for node("+n.letter+"), which is node("+node.letter+").children["+node.children.indexOf(n)+"] ");
 				preorder(n, sb);
 			}
 		} else {
-			sb.append(node.letter);
-			sb.append(new String("-|>\n"));
-//			System.out.println("end of root<->leaf path");
+			sb.append(bottomsUp(node)+"\n");
 		}
 		return sb;
+	}
+	
+	public StringBuffer bottomsUp(Node n){
+		StringBuffer sb = new StringBuffer();
+		while(n.parent!=null){
+			sb.append(n.letter);
+			n = n.parent;
+		}
+		return sb.reverse();
 	}
 
 	public void insert(String s, Node node) {
