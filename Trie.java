@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
@@ -34,29 +39,20 @@ public class Trie implements StringStorage {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Trie trie = new Trie();
-		String[] words = { 
-				"abu", 
-				"a",
-				"abs",
-				"apogee",
-				"bucket", 
-				"buck", 
-				"apple", 
-				"ape", 
-				"al",
-				"charlie",
-				"al",
-				"at",
-				"an",
-				"as",
-				"ab"
-				};
-
-		for (String s : words) {
+		File file = new File(args[0]);
+		FileReader fr = new FileReader(file);
+		BufferedReader br = new BufferedReader(fr);
+		String s;
+		double start = System.nanoTime();
+		int count = 0;
+		while((s=br.readLine())!=null){
 			trie.insert(s, trie.root);
+			count++;
 		}
+		double elapsed = (System.nanoTime() - start);
+		System.out.print("elpsed time is "+ elapsed+" nanoseconds for insertion and sorting of "+count+" words");
 		System.out.print(trie.preorder(trie.root, new StringBuffer()));
 
 	}
