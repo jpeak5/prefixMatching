@@ -32,12 +32,6 @@ public class Trie implements StringStorage {
 			this.key = (int) this.letter;
 		}
 	}
-
-	public void topLevelChildren(Node node){
-		for (Node n : node.children){
-			System.out.println(n.letter);
-		}
-	}
 	
 	public static void main(String[] args) throws IOException {
 		Trie trie = new Trie();
