@@ -25,7 +25,13 @@ public class Trie implements StringStorage {
 		public Node() {
 
 		}
-
+		
+		public Node(Node leaf){
+			this.parent = leaf;
+			
+			this.key=-1;
+		}
+		
 		public Node(char letter, Node parent) {
 			this.parent = parent;
 			this.letter = letter;
@@ -46,7 +52,7 @@ public class Trie implements StringStorage {
 			count++;
 		}
 		double elapsed = (System.nanoTime() - start);
-		System.out.print("elpsed time is "+ elapsed+" nanoseconds for insertion and sorting of "+count+" words");
+		System.out.print("elpsed time is "+ elapsed+" nanoseconds for insertion and sorting of "+count+" words\n");
 		System.out.print(trie.preorder(trie.root, new StringBuffer()));
 
 	}
@@ -70,32 +76,38 @@ public class Trie implements StringStorage {
 	
 
 	public void insert(String s, Node node) {
+		char c = s.charAt(0);
+		ArrayList <Node> children = node.children; //convenience var
+
 		boolean found = false;
 		int i = 0;
-		char cti = s.charAt(0);
-
-		while (node.children.size() > i && node.children.get(i).letter <= cti) {
-			if (cti == node.children.get(i).letter) {
+		//first, see if the current node
+		while (children.size() > i && children.get(i).letter <= c) {
+			if (c == children.get(i).letter) {
 				found = true;
 				break;
 			}
 			i++;
 		}
 
-		String newS = s.substring(1);
+		String newStr = s.substring(1);
 		if (found == true) {// continue to try the insertion on the found
 			// node
 			if (s.length() > 1) {
-				insert(newS, node.children.get(i));
+				insert(newStr, node.children.get(i));
+			}else{
+				Node leaf = new Node(node);
+				node.children.add(0,leaf);
 			}
 		} else {// create a new node
-			Node n = new Node(cti, node);
-			node.children.add(i, n);
+			Node n = new Node(c, node);
+			children.add(i, n);
 //			System.out.println("insert("+n.letter+") at n.children["+i+"] for node.letter = \'"+node.letter+"\'");
 			if (s.length() > 1) {
-				insert(newS, n);
+				insert(newStr, n);
 			}else{
-				newS = ne
+				Node leaf = new Node(n);
+				n.children.add(0,leaf);
 			}
 		}
 
