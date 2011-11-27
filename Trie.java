@@ -81,10 +81,11 @@ public class Trie implements StringStorage {
 			}
 			i++;
 		}
+
+		String newS = s.substring(1);
 		if (found == true) {// continue to try the insertion on the found
 			// node
 			if (s.length() > 1) {
-				String newS = s.substring(1);
 				insert(newS, node.children.get(i));
 			}
 		} else {// create a new node
@@ -92,8 +93,9 @@ public class Trie implements StringStorage {
 			node.children.add(i, n);
 //			System.out.println("insert("+n.letter+") at n.children["+i+"] for node.letter = \'"+node.letter+"\'");
 			if (s.length() > 1) {
-				String newS = s.substring(1);
 				insert(newS, n);
+			}else{
+				newS = ne
 			}
 		}
 
