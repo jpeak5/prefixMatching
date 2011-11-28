@@ -8,11 +8,7 @@ public class Array implements StringStorage {
 	
 	String[] array;
 
-	@Override
-	public void insert(String s) {
-		// TODO Auto-generated method stub
-		this.append(s);
-	}
+
 
 	@Override
 	public List<String> search(String p) {
@@ -26,5 +22,12 @@ public class Array implements StringStorage {
 	
 	private void append(String s){
 		//array.push(s);
+	}
+	
+	@Override
+	public void insert(String s, Trie.Node node) {
+		// TODO Auto-generated method stub
+		s = s;
+		node = node;
 	}
 }
