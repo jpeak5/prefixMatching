@@ -70,14 +70,14 @@ public class PrefixMatcher {
 			} else {
 
 				start = System.nanoTime();
-				System.out.println("You entered " + p);
+//				System.out.println("You entered " + p);
 				ArrayList<String> list = trie.search(p);
 				if (list != null) {
 					for (String m : list) {
 						System.out.println(m);
 					}
 				} else {
-					System.out.println("***patern not found");
+					System.out.println("No matches found for pattern "+p);
 				}
 				elapsed = (System.nanoTime() - start);
 				System.out.print("Trie lookup complete.\n" + list.size()

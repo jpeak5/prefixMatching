@@ -121,7 +121,7 @@ public class Trie implements StringStorage {
 			}
 		}
 
-		ArrayList list = searchTraversal(node, p, new ArrayList<String>());
+		ArrayList<String> list = searchTraversal(node, p, new ArrayList<String>());
 		return list;
 	}
 
