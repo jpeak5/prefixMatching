@@ -28,75 +28,63 @@ public class PrefixMatcher {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		for (int i = 0; i < args.length; i++) {
-			Trie trie = new Trie();
-			String s;
-			BufferedReader br = null;
-			FileReader in = null;
-
-			int count = 0;
-
-			
-			try {
-				File file = new File(args[i]);
-				in = new FileReader(file);
-				br = new BufferedReader(in);
-				System.out.println("Loading file "+args[i]+"...");
-				while ((s = br.readLine()) != null) {
-					trie.insert(s, trie.root);
-					count++;
-				}
-			} finally {
-				if (in != null) {
-					in.close();
-				}
-			}
-			BufferedReader buffy = new BufferedReader(new InputStreamReader(
-					System.in));
-			System.out.println("Done");
+		if (args.length != 1) {
 			System.out
-					.println("Type a pattern to find matches in the dictionary. Type '/q' to exit the program.");
-			while (true) {
-				System.out.print("prefix-matcher$ ");
-				System.out.flush();
-				String p = buffy.readLine();
-				if (p.equals("/q")) {
-					System.exit(0);
-				} else {
-					
-					double start = System.nanoTime();
-					System.out.println("You entered " + p);
-					ArrayList<String> list = trie.search(p);
-					if (list != null) {
-						for (String m : list) {
-							System.out.println(m);
-						}
-					} else {
-						System.out.println("***patern not found");
-					}
-					double elapsed = (System.nanoTime() - start);
-					System.out.print("Trie lookup complete.\n"+list.size()+" words found.\n"+elapsed/1000+" microseconds\n");
-				}
-			}
-			// System.out.print(trie.preorder(trie.root, new StringBuffer()));
-			// System.out.println("elapsed time is " + elapsed / 1000
-			// + " microseconds for insertion and sorting of " + count
-			// + " words from " + args[i] + "\n");
+					.println("Usage: give the name of a single dictionary file as the sole argument");
 		}
-		System.out.println("done");
+		Trie trie = new Trie();
+		String s;
+		BufferedReader br = null;
+		FileReader in = null;
 
+		int count = 0;
+		double start = System.nanoTime();
+		try {
+			File file = new File(args[0]);
+			in = new FileReader(file);
+			br = new BufferedReader(in);
+			System.out.print("Loading file " + args[0] + "...");
+			while ((s = br.readLine()) != null) {
+				trie.insert(s, trie.root);
+				count++;
+			}
+		} finally {
+			if (in != null) {
+				in.close();
+			}
+		}
+		System.out.print("Done.\n");
+		double elapsed = (System.nanoTime() - start);
+		System.out.print(count + " words loaded in " + elapsed / 1000000000
+				+ " seconds\n");
+		BufferedReader buffy = new BufferedReader(new InputStreamReader(
+				System.in));
+		System.out
+				.println("Type a pattern to find matches in the dictionary. Type '/q' to exit the program.");
 		while (true) {
-			// System.out.print("$prefixMatcher->");//print a prompt
-			// wait for input
-			// when input comes,
-			// start the timer
-			// call a.search(p), and save the returned List<String> for later
-			// output
-			// call t.search(p), and save the returned List<String> for later
-			// output
-			// output the search results
-			// stop the timer
+			System.out.print("prefix-matcher$ ");
+			System.out.flush();
+			String p = buffy.readLine();
+			if (p.equals("/q")) {
+				System.exit(0);
+			} else {
+
+				start = System.nanoTime();
+				System.out.println("You entered " + p);
+				ArrayList<String> list = trie.search(p);
+				if (list != null) {
+					for (String m : list) {
+						System.out.println(m);
+					}
+				} else {
+					System.out.println("***patern not found");
+				}
+				elapsed = (System.nanoTime() - start);
+				System.out.print("Trie lookup complete.\n" + list.size()
+						+ " words found.\n" + elapsed / 1000
+						+ " microseconds\n");
+			}
+
 		}
 	}
-
 }

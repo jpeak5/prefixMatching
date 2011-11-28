@@ -1,0 +1,10 @@
+to run this program, type javac *.java at the command prompt to compile the constituent files.
+With that done, run the program by typing java prefixMatcher <dictionary>, where the single 
+argument is the name of a dictionary file consiting of n words, one word per line. We have 
+included the file Dictionary.txt for this purpose. This dictionary file contains ~250k words 
+randomized from the linux file /usr/share/dict/words.
+
+the simplest command line, then, is 
+	
+	java PrefixMatcher dictionary.txt
+
