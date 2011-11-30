@@ -9,6 +9,7 @@ public class TrieArrayList {
 
 	Node root = null;
 	int insertionCount = 0;
+	String lastStem;
 
 	public TrieArrayList() {
 		this.root = new Node();
@@ -105,11 +106,11 @@ public class TrieArrayList {
 
 	}
 
-	public ArrayList<String> searchTraversal(Node node, String p,
+	public ArrayList<String> searchTraversal(Node node, 
 			ArrayList<String> list) {
 		if (node.children.size() > 0) {
 			for (Node n : node.children) {
-				searchTraversal(n, p, list);
+				searchTraversal(n,  list);
 			}
 		} else {
 			StringBuffer word = new StringBuffer();
@@ -124,6 +125,7 @@ public class TrieArrayList {
 
 	public ArrayList<String> search(String p) {
 		// TODO Auto-generated method stub
+		this.lastStem = p;
 		Node node = root;
 		while (p.length() > 0) {
 			char c = p.charAt(0);
@@ -138,7 +140,7 @@ public class TrieArrayList {
 			}
 		}
 
-		ArrayList<String> list = searchTraversal(node, p,
+		ArrayList<String> list = searchTraversal(node, 
 				new ArrayList<String>());
 		return list;
 	}
