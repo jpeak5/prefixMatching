@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Array implements StringStorage {
+public class Array {
 	
 	//keeps track of the size of the array versus its capacity
 	//this will be useful when we begin binary searching
@@ -10,7 +10,7 @@ public class Array implements StringStorage {
 
 
 
-	@Override
+	
 	public List<String> search(String p) {
 		// find all the strings whose prefixes match parameter p and return as a List
 		return null;
@@ -24,8 +24,8 @@ public class Array implements StringStorage {
 		//array.push(s);
 	}
 	
-	@Override
-	public void insert(String s, Trie.Node node) {
+	
+	public void insert(String s, TrieArrayList.Node node) {
 		// TODO Auto-generated method stub
 		s = s;
 		node = node;

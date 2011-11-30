@@ -1,24 +1,42 @@
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Trie implements StringStorage {
+
+
+public class TrieArrayList {
 
 	Node root = null;
 	int insertionCount = 0;
 
-	public Trie() {
+	public TrieArrayList() {
 		this.root = new Node();
 	}
 
-	class Node {
-		int key;
-		char letter;
-		Node parent;
-		ArrayList<Node> children = new ArrayList<Node>();
+	class Node implements Comparable <Node> {
+		@Override
+		public int compareTo(Node node) {
+			// TODO Auto-generated method stub
+			if (this.letter > node.letter) {
+				return 1;
+			} else if (this.letter < node.letter) {
+				return -1;
+			} else {
+				return 0;
+			}
+		}
+		int key; // 4 bytes
+		char letter; // 2 bytes
+		Node parent; // 4 bytes (reference field)
+		ArrayList<Node> children = new ArrayList<Node>();// O(26*4 bytes)??
 
 		public Node() {
 
+		}
+		
+		public Node(char c){
+			this.letter = c;
 		}
 
 		public Node(Node leaf) {
@@ -51,19 +69,18 @@ public class Trie implements StringStorage {
 		return sb;
 	}
 
+
 	public void insert(String s, Node node) {
 		char c = s.charAt(0);
 		ArrayList<Node> children = node.children; // convenience var
-
+		Node test = new Node(c);
 		boolean found = false;
-		int i = 0;
-		// first, see if the current node
-		while (children.size() > i && children.get(i).letter <= c) {
-			if (c == children.get(i).letter) {
-				found = true;
-				break;
-			}
-			i++;
+		
+		int i = Collections.binarySearch(children,test);
+		if(i>=0){
+			found = true;
+		}else{
+			i = Math.abs(i+1);
 		}
 		String newStr = s.substring(1);
 		if (found == true) {// continue to try the insertion on the found
@@ -105,7 +122,6 @@ public class Trie implements StringStorage {
 		return list;
 	}
 
-	@Override
 	public ArrayList<String> search(String p) {
 		// TODO Auto-generated method stub
 		Node node = root;
@@ -116,12 +132,14 @@ public class Trie implements StringStorage {
 					p = p.substring(1);
 					node = n;
 				}
-			}if(node == root){
+			}
+			if (node == root) {
 				return null;
 			}
 		}
 
-		ArrayList<String> list = searchTraversal(node, p, new ArrayList<String>());
+		ArrayList<String> list = searchTraversal(node, p,
+				new ArrayList<String>());
 		return list;
 	}
 

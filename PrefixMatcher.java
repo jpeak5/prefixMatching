@@ -32,7 +32,7 @@ public class PrefixMatcher {
 			System.out
 					.println("Usage: give the name of a single dictionary file as the sole argument");
 		}
-		Trie trie = new Trie();
+		TrieArrayList trieArrayList = new TrieArrayList();
 		String s;
 		BufferedReader br = null;
 		FileReader in = null;
@@ -45,9 +45,11 @@ public class PrefixMatcher {
 			br = new BufferedReader(in);
 			System.out.print("Loading file " + args[0] + "...");
 			while ((s = br.readLine()) != null) {
-				trie.insert(s, trie.root);
+				trieArrayList.insert(s, trieArrayList.root);
 				count++;
 			}
+			//test for insertion correctness by calling preorder on root
+//			System.out.println(trieArrayList.preorder(trieArrayList.root, new StringBuffer()));
 		} finally {
 			if (in != null) {
 				in.close();
@@ -71,7 +73,7 @@ public class PrefixMatcher {
 
 				start = System.nanoTime();
 //				System.out.println("You entered " + p);
-				ArrayList<String> list = trie.search(p);
+				ArrayList<String> list = trieArrayList.search(p);
 				if (list != null) {
 					for (String m : list) {
 						System.out.println(m);
