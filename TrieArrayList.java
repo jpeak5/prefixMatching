@@ -3,19 +3,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 
-
-
 public class TrieArrayList {
 
 	Node root = null;
 	int insertionCount = 0;
-	String lastStem;
 
 	public TrieArrayList() {
 		this.root = new Node();
 	}
 
-	class Node implements Comparable <Node> {
+	class Node implements Comparable<Node> {
 		@Override
 		public int compareTo(Node node) {
 			// TODO Auto-generated method stub
@@ -27,6 +24,7 @@ public class TrieArrayList {
 				return 0;
 			}
 		}
+
 		int key; // 4 bytes
 		char letter; // 2 bytes
 		Node parent; // 4 bytes (reference field)
@@ -35,8 +33,8 @@ public class TrieArrayList {
 		public Node() {
 
 		}
-		
-		public Node(char c){
+
+		public Node(char c) {
 			this.letter = c;
 		}
 
@@ -70,18 +68,17 @@ public class TrieArrayList {
 		return sb;
 	}
 
-
 	public void insert(String s, Node node) {
 		char c = s.charAt(0);
 		ArrayList<Node> children = node.children; // convenience var
 		Node test = new Node(c);
 		boolean found = false;
-		
-		int i = Collections.binarySearch(children,test);
-		if(i>=0){
+
+		int i = Collections.binarySearch(children, test);
+		if (i >= 0) {
 			found = true;
-		}else{
-			i = Math.abs(i+1);
+		} else {
+			i = Math.abs(i + 1);
 		}
 		String newStr = s.substring(1);
 		if (found == true) {// continue to try the insertion on the found
@@ -106,11 +103,10 @@ public class TrieArrayList {
 
 	}
 
-	public ArrayList<String> searchTraversal(Node node, 
-			ArrayList<String> list) {
+	public ArrayList<String> getFingers(Node node, ArrayList<String> list) {
 		if (node.children.size() > 0) {
 			for (Node n : node.children) {
-				searchTraversal(n,  list);
+				getFingers(n, list);
 			}
 		} else {
 			StringBuffer word = new StringBuffer();
@@ -123,26 +119,47 @@ public class TrieArrayList {
 		return list;
 	}
 
-	public ArrayList<String> search(String p) {
-		// TODO Auto-generated method stub
-		this.lastStem = p;
+	
+	public void storageRequired(Node node, int i){
+		//using a preorder traversal to visit each node
+		if(node == null){
+			return;
+		}else{
+			i++;
+			System.out.println(">>"+node.letter);
+		}
+		for(Node n : node.children){
+			storageRequired(n, i);
+		}
+		System.out.println(i+"nodes");
+	}
+	
+	public Node getWristNode(String p) {
 		Node node = root;
 		while (p.length() > 0) {
 			char c = p.charAt(0);
-			for (Node n : node.children) {
-				if (n.letter == c) {
-					p = p.substring(1);
-					node = n;
-				}
-			}
-			if (node == root) {
+			Node target = new Node(c);
+			int search = Collections.binarySearch(node.children, target);
+			if (search >= 0) {
+				p = p.substring(1);
+				node = node.children.get(search);
+			}else{
 				return null;
 			}
 		}
+		return node;
+	}
 
-		ArrayList<String> list = searchTraversal(node, 
-				new ArrayList<String>());
-		return list;
+	public ArrayList<String> search(String p) {
+
+		Node node = getWristNode(p);
+		if (node == null) {
+			return null;
+		} else {
+			ArrayList<String> list = getFingers(node,
+					new ArrayList<String>());
+			return list;
+		}
 	}
 
 }

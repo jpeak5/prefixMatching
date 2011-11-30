@@ -48,8 +48,9 @@ public class PrefixMatcher {
 				trieArrayList.insert(s, trieArrayList.root);
 				count++;
 			}
-			//test for insertion correctness by calling preorder on root
-//			System.out.println(trieArrayList.preorder(trieArrayList.root, new StringBuffer()));
+			// test for insertion correctness by calling preorder on root
+			// System.out.println(trieArrayList.preorder(trieArrayList.root, new
+			// StringBuffer()));
 		} finally {
 			if (in != null) {
 				in.close();
@@ -72,19 +73,19 @@ public class PrefixMatcher {
 			} else {
 
 				start = System.nanoTime();
-//				System.out.println("You entered " + p);
 				ArrayList<String> list = trieArrayList.search(p);
+				elapsed = (System.nanoTime() - start);
 				if (list != null) {
 					for (String m : list) {
 						System.out.println(m);
 					}
+					int wordsFound = list!=null ? list.size() : 0;
+					System.out.println("-----------------\nTrie lookup complete.\n"
+							+wordsFound+" words found.\nin " + elapsed / 1000+ " microseconds\n");
 				} else {
-					System.out.println("No matches found for pattern "+p);
+					System.out.println("No matches found for pattern " + p);
 				}
-				elapsed = (System.nanoTime() - start);
-				System.out.print("Trie lookup complete.\n" + list.size()
-						+ " words found.\n" + elapsed / 1000
-						+ " microseconds\n");
+				
 			}
 
 		}
