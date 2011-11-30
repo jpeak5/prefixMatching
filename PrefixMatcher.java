@@ -18,6 +18,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+
+
 public class PrefixMatcher {
 
 	/**
@@ -82,6 +84,13 @@ public class PrefixMatcher {
 					int wordsFound = list!=null ? list.size() : 0;
 					System.out.println("-----------------\nTrie lookup complete.\n"
 							+wordsFound+" words found.\nin " + elapsed / 1000+ " microseconds\n");
+					ArrayList<TrieArrayList.Node> nodes = trieArrayList.calculateStorage(p);
+					System.out.println((p.length()+nodes.size()-1) +" nodes used for storage");
+					for(TrieArrayList.Node n : nodes){
+						System.out.print(n.letter+" ");
+					}
+					
+//					System.out.println("results stored in "+(trieArrayList.calculateStorage(p)+p.length()-1)+" nodes");
 				} else {
 					System.out.println("No matches found for pattern " + p);
 				}

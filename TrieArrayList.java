@@ -120,18 +120,27 @@ public class TrieArrayList {
 	}
 
 	
-	public void storageRequired(Node node, int i){
+	public ArrayList<Node> getSubNodes(Node node, ArrayList<Node>nodes){
 		//using a preorder traversal to visit each node
 		if(node == null){
-			return;
+			return null;
 		}else{
-			i++;
-			System.out.println(">>"+node.letter);
+			nodes.add(node);
+//			System.out.println(">>"+node.letter);
 		}
 		for(Node n : node.children){
-			storageRequired(n, i);
+			getSubNodes(n, nodes);
 		}
-		System.out.println(i+"nodes");
+		return nodes;
+	}
+	
+	public ArrayList<Node> calculateStorage(String p){
+		Node node = getWristNode(p);
+		if(node!=null){
+			ArrayList<Node> nodes = getSubNodes(node, new ArrayList<Node>());
+			return nodes;
+		}
+		return null;
 	}
 	
 	public Node getWristNode(String p) {
