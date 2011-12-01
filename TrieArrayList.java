@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class TrieArrayList {
-
+	
+	long size;
 	Node root = null;
 	int insertionCount = 0;
 
@@ -28,7 +29,7 @@ public class TrieArrayList {
 		int terminator; // 4 bytes
 		char letter; // 2 bytes
 		Node parent; // 4 bytes (reference field)
-		ArrayList<Node> children = new ArrayList<Node>();// O(26*4 bytes)??
+		ArrayList<Node> children = new ArrayList<Node>();// 8+4 bytes
 		
 		public Node(){}
 		
@@ -65,7 +66,13 @@ public class TrieArrayList {
 		}
 		return sb;
 	}
-
+	
+	public long nodeSize(Node node){
+		long size =10;//sum of static fields
+		size+=node.children.size()*4;//4bytes per node reference
+		return size;
+	}
+	
 	public void insert(String s, Node node) {
 		char c = s.charAt(0);
 		ArrayList<Node> children = node.children; // convenience var
@@ -143,9 +150,19 @@ public class TrieArrayList {
 				node=node.parent;
 				nodes.add(0,node);
 			}
+			
 			return nodes;
 		}
 		return null;
+	}
+	
+	public long calculateStorage(){
+		long size = 0;
+		ArrayList <Node> al = getSubNodes(root, new ArrayList<Node>());
+		for(Node n : al){
+			size+=nodeSize(n);
+		}
+		return size;
 	}
 	
 	public Node getWristNode(String p) {

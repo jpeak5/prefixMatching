@@ -45,7 +45,8 @@ public class PrefixMatcher {
 			double elapsed = (System.nanoTime() - start);
 			System.out.printf("%,d  words loaded into Trie in %,f microseconds\n", count, elapsed / 1000);
 			
-
+			trieArrayList.preorder(trieArrayList.root, new StringBuffer());
+			System.out.println("Trie storage of "+count+" words consumes "+trieArrayList.calculateStorage()+"bytes");
 			// test for insertion correctness by calling preorder on root
 			// System.out.println(trieArrayList.preorder(trieArrayList.root, new
 			// StringBuffer()));
@@ -82,8 +83,8 @@ public class PrefixMatcher {
 			System.out.printf("ArrayStorage: %,d words sorted in %,f micro-seconds\n", asCount, asElapsed / 1000);
 			
 //			 test for insertion correctness by calling preorder on root
-			 System.out.println(trieArrayList.preorder(trieArrayList.root, new
-			 StringBuffer()));
+//			 System.out.println(trieArrayList.preorder(trieArrayList.root, new
+//			 StringBuffer()));
 		}finally {
 			if (in != null) {
 				in.close();
