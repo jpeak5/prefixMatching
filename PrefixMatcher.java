@@ -17,148 +17,221 @@ public class PrefixMatcher {
 	public static void main(String[] args) throws IOException {
 
 		if (args.length != 1) {
-			System.out.println("Usage: give the name of a single dictionary file as the sole argument");
+			System.out
+					.println("Usage: give the name of a single dictionary file as the sole argument");
 			System.exit(-1);
 		}
-		
+
 		String s;
 		BufferedReader br = null;
 		FileReader in = null;
-		
-		
-		TrieArrayList trieArrayList = new TrieArrayList();
 
+		Trie trie = new Trie();
+		
+		int trieWordCount = 0;
+		double trieElapsedTime;
+		long trieBytes;
+		
 		try {
-			int count = 0;
+			System.out.println("Trie");
+			
 			double start = System.nanoTime();
 			File file = new File(args[0]);
 			in = new FileReader(file);
 			br = new BufferedReader(in);
-			System.out.print("Loading file " + args[0] + "...");
-			
+			System.out.print("Loading file " + args[0] + "...\n");
+
 			while ((s = br.readLine()) != null) {
-				trieArrayList.insert(s, trieArrayList.root);
-				count++;
+				trie.insert(s, trie.root);
+				trieWordCount++;
 			}
+
+			trieElapsedTime = ((System.nanoTime() - start)/1000);
+			trieBytes = trie.calculateStorage();
 			
-			double elapsed = (System.nanoTime() - start);
-			System.out.printf("%,d  words loaded into Trie in %,f microseconds\n", count, elapsed / 1000);
 			
-			trieArrayList.preorder(trieArrayList.root, new StringBuffer());
-			System.out.println("Trie storage of "+count+" words consumes "+trieArrayList.calculateStorage()+"bytes");
-			// test for insertion correctness by calling preorder on root
-			// System.out.println(trieArrayList.preorder(trieArrayList.root, new
-			// StringBuffer()));
+			
+
 		} finally {
 			if (in != null) {
 				in.close();
 			}
 		}
-		//now read in the array storage
-		ArrayStorage as = new ArrayStorage();
+		// now read in the array storage
+		ArrayStorage array = new ArrayStorage();
 		
+		int arrayWordCount = 0;
+		double arrayElapsedTime;
+		long arrayBytes;
 
-		
 		try {
-			
+			System.out.println("ArrayStorage");
 			File file = new File(args[0]);
 			in = new FileReader(file);
 			br = new BufferedReader(in);
-			System.out.print("Loading file " + args[0] + "...");
+
+			System.out.print("Loading file " + args[0] + "...\n");
 
 			int asCount = 0;
 			double asStart = System.nanoTime();
 			while ((s = br.readLine()) != null) {
-				as.add(s);
-				asCount++;
+				array.add(s);
+				arrayWordCount++;
 			}
-			double asElapsed = System.nanoTime() - asStart;
-			System.out.printf("%,d  words loaded into Trie in %,f microseconds\n", asCount, asElapsed / 1000);
-			
-			//now sort the array storage structure
-			asStart = System.nanoTime();
-			as.sort();
-			asElapsed = System.nanoTime() - asStart;
-			System.out.printf("ArrayStorage: %,d words sorted in %,f micro-seconds\n", asCount, asElapsed / 1000);
+			array.sort();
+			arrayElapsedTime = ((System.nanoTime() - asStart)/1000);
+			arrayBytes = array.calculateStorage();
 
-			System.out.println("The ArrayStorage structure takes up "+as.calculateStorage()+" bytes.");
-
-			// test for insertion correctness by calling preorder on root
-			// System.out.println(trieArrayList.preorder(trieArrayList.root, new
-			// StringBuffer()));
-
-		}finally {
+		} finally {
 			if (in != null) {
 				in.close();
 			}
 		}
 		
 		
+		
+		//print initialization stats
+		StringBuffer sb = new StringBuffer();
+		sb.append(hardLine('*', 80)+"\n");
+		String str = "";
+		str = hardLine(' ',15-str.length())+"Trie";
+		str += hardLine(' ',40-str.length());
+		str+="|";
+		str+=hardLine(' ', 10)+"Array";
+		str+="\n";
+		sb.append(str);
+		
+		str="Word Count";
+		str += hardLine(' ',15-str.length());
+		str+=String.format("%,d",trieWordCount);
+		str += hardLine(' ',40-str.length());
+		str+="|";
+		str += hardLine(' ', 10);
+		str+=String.format("%,d",arrayWordCount);
+		str+="\n";
+		sb.append(str);
+		
+		str="Init Time";
+		str += hardLine(' ',15-str.length());
+		str+=String.format("%,.0f",trieElapsedTime);
+		str += hardLine(' ',40-str.length());
+		str+="|";
+		str += hardLine(' ', 10);
+		str+=String.format("%,.0f",arrayElapsedTime);
+		str+="\n";
+		sb.append(str);
+		
+		str="Bytes";
+		str += hardLine(' ',15-str.length());
+		str+=String.format("%,d",trieBytes);
+		str += hardLine(' ',40-str.length());
+		str+="|";
+		str += hardLine(' ', 10);
+		str+=String.format("%,d",arrayBytes);
+		str+="\n";
+		sb.append(str);
+		sb.append(hardLine('*', 80)+"\n");
+		System.out.print(sb.toString());
+
+		// debug
+		// System.out.println(trie.preorder(trie.root, new StringBuffer()));
+
 		BufferedReader buffy = new BufferedReader(new InputStreamReader(
 				System.in));
 		System.out
 				.println("Type a pattern to find matches in this dictionary. Type '/q' to exit the program.");
 		while (true) {
 			System.out.flush();
-			System.out.print("prefix-matcher$ ");
+			System.out.print("prefix-matcher # ");
 			System.out.flush();
 			String p = buffy.readLine();
 			if (p.equals("/q")) {
 				System.exit(0);
 			} else {
 
+				// perform query
 				double start = System.nanoTime();
-				ArrayList<String> list = trieArrayList.search(p);
+				ArrayList<String> trieResults = trie.search(p);
 				double elapsed = (System.nanoTime() - start);
-				
+
 				double asStart = System.nanoTime();
-				LinkedList <String> results = as.search(p);
-				double asElapsed = System.nanoTime() - start;
-				if (list != null) {
-					for (String m : list) {
-						System.out.println(m);
-					}
-					int wordsFound = list != null ? list.size() : 0;
-					System.out
-							.println("-----------------\nTrie lookup complete.\n"
-									+ wordsFound
-									+ " words found.\nin "
-									+ elapsed / 1000 + " microseconds\n");
-					ArrayList<TrieArrayList.Node> nodes = trieArrayList
-							.calculateStorage(p);
-//					System.out
-//							.println((p.length() + nodes.size() - 1)
-//									+ " nodes used for storage (including the root node)");
-//					int i = 0;
-//					while (i < p.length() - 1) {
-//						System.out.print(p.charAt(i) + " ");
-//						i++;
-//					}
-					System.out.print(nodes.size()+" nodes required to store the result set (root node is counted but not output) \n{");
-//					int i;
-//					for(i=0;i<nodes.size()-1;i++) {
-//						char l = nodes.get(i).letter;
-//						System.out.print(l);
-//						System.out.print(", ");
-//						if(i%10 ==0){
-//							System.out.print("\n");
-//						}
-//					}
-//					System.out.print(nodes.get(i).letter+"\n}\n");
-//					 System.out.println("results stored in "+(nodes.size()-1 + p.length()-1)+" nodes");
-				} else {
-					System.out.println("No matches found for pattern " + p);
-				}
-				System.out.println("ArrayStorage Results:");
-				if(results !=null){
-				for(String str : results){
-					System.out.println(str);
-				}
-				System.out.printf("%,d results found in %,f microseconds\n", results.size(), asElapsed/1000);
-				}
+				LinkedList<String> arrayResults = array.search(p);
+				double asElapsed = System.nanoTime() - asStart;
 				
+				// print output
+				int rows=0;
+				if(trieResults != null && arrayResults !=null){
+					rows = Math.max(arrayResults.size(), trieResults.size());
+				}
+				sb = new StringBuffer();
+				sb.append(hardLine('*', 80)+"\n");
+				str = "";
+				str = hardLine(' ',15-str.length())+"Trie";
+				str += hardLine(' ',40-str.length());
+				str+="|";
+				str+=hardLine(' ', 10)+"Array";
+				str+="\n";
+				sb.append(str);
+				
+				str="Matches";
+				str += hardLine(' ',15-str.length());
+				str+=trieResults != null ? trieResults.size() : 0;
+				str += hardLine(' ',40-str.length());
+				str+="|";
+				str += hardLine(' ', 10);
+				str+=arrayResults != null ? arrayResults.size() : 0;
+				str+="\n";
+				sb.append(str);
+				
+				str="Time";
+				str += hardLine(' ',15-str.length());
+				str+=String.format("%,.0f", elapsed);
+				str+=" microsec";
+				str += hardLine(' ',40-str.length());
+				str+="|";
+				str += hardLine(' ', 10);
+				str+=String.format("%,.0f", asElapsed);
+				str+=" microsec";
+				str+="\n";
+				sb.append(str);
+				
+				sb.append(hardLine('-', 80)+"\n");
+				
+				for (int i = 0; i < rows; i++) {
+					str = "";
+					if (trieResults.get(i) != null) {
+						str += trieResults.get(i);
+					}
+					str += hardLine(' ', 40 - str.length());
+					str += "|";
+					str += hardLine(' ', 10);
+					if (arrayResults.get(i) != null) {
+						str += arrayResults.get(i);
+					}
+					str+="\n";
+					sb.append(str);
+				}System.out.println(sb.toString());
+
 			}
-//			System.out.flush();
+
 		}
+	}
+
+	public static String formatOutput(int columns) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i <= columns; i++) {
+			sb.append("    ");
+		}
+
+		return sb.toString();
+	}
+
+	public static String hardLine(char c, int cols) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i <= cols; i++) {
+			sb.append(c);
+		}
+		;
+		return sb.toString();
 	}
 }
