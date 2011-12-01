@@ -28,7 +28,6 @@ public class PrefixMatcher {
 		
 		TrieArrayList trieArrayList = new TrieArrayList();
 
-
 		try {
 			int count = 0;
 			double start = System.nanoTime();
@@ -81,10 +80,13 @@ public class PrefixMatcher {
 			as.sort();
 			asElapsed = System.nanoTime() - asStart;
 			System.out.printf("ArrayStorage: %,d words sorted in %,f micro-seconds\n", asCount, asElapsed / 1000);
-			
-//			 test for insertion correctness by calling preorder on root
-//			 System.out.println(trieArrayList.preorder(trieArrayList.root, new
-//			 StringBuffer()));
+
+			System.out.println("The ArrayStorage structure takes up "+as.calculateStorage()+" bytes.");
+
+			// test for insertion correctness by calling preorder on root
+			// System.out.println(trieArrayList.preorder(trieArrayList.root, new
+			// StringBuffer()));
+
 		}finally {
 			if (in != null) {
 				in.close();
