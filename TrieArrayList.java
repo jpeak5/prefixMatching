@@ -125,7 +125,9 @@ public class TrieArrayList {
 		if(node == null){
 			return null;
 		}else{
+			if(node.key!=-1){
 			nodes.add(node);
+			}
 //			System.out.println(">>"+node.letter);
 		}
 		for(Node n : node.children){
@@ -138,6 +140,11 @@ public class TrieArrayList {
 		Node node = getWristNode(p);
 		if(node!=null){
 			ArrayList<Node> nodes = getSubNodes(node, new ArrayList<Node>());
+			
+			while(node.parent!=null){
+				node=node.parent;
+				nodes.add(0,node);
+			}
 			return nodes;
 		}
 		return null;

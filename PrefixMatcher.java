@@ -18,8 +18,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-
-
 public class PrefixMatcher {
 
 	/**
@@ -65,8 +63,9 @@ public class PrefixMatcher {
 		BufferedReader buffy = new BufferedReader(new InputStreamReader(
 				System.in));
 		System.out
-				.println("Type a pattern to find matches in the dictionary. Type '/q' to exit the program.");
+				.println("Type a pattern to find matches in this dictionary. Type '/q' to exit the program.");
 		while (true) {
+			System.out.flush();
 			System.out.print("prefix-matcher$ ");
 			System.out.flush();
 			String p = buffy.readLine();
@@ -81,22 +80,39 @@ public class PrefixMatcher {
 					for (String m : list) {
 						System.out.println(m);
 					}
-					int wordsFound = list!=null ? list.size() : 0;
-					System.out.println("-----------------\nTrie lookup complete.\n"
-							+wordsFound+" words found.\nin " + elapsed / 1000+ " microseconds\n");
-					ArrayList<TrieArrayList.Node> nodes = trieArrayList.calculateStorage(p);
-					System.out.println((p.length()+nodes.size()-1) +" nodes used for storage");
-					for(TrieArrayList.Node n : nodes){
-						System.out.print(n.letter+" ");
+					int wordsFound = list != null ? list.size() : 0;
+					System.out
+							.println("-----------------\nTrie lookup complete.\n"
+									+ wordsFound
+									+ " words found.\nin "
+									+ elapsed / 1000 + " microseconds\n");
+					ArrayList<TrieArrayList.Node> nodes = trieArrayList
+							.calculateStorage(p);
+//					System.out
+//							.println((p.length() + nodes.size() - 1)
+//									+ " nodes used for storage (including the root node)");
+//					int i = 0;
+//					while (i < p.length() - 1) {
+//						System.out.print(p.charAt(i) + " ");
+//						i++;
+//					}
+					System.out.print(nodes.size()+" nodes required to store the result set (root node is counted but not output) \n{");
+					int i;
+					for(i=0;i<nodes.size()-1;i++) {
+						char l = nodes.get(i).letter;
+						System.out.print(l);
+						System.out.print(", ");
+						if(i%10 ==0){
+							System.out.print("\n");
+						}
 					}
-					
-//					System.out.println("results stored in "+(trieArrayList.calculateStorage(p)+p.length()-1)+" nodes");
+					System.out.print(nodes.get(i).letter+"\n}\n");
+//					 System.out.println("results stored in "+(nodes.size()-1 + p.length()-1)+" nodes");
 				} else {
 					System.out.println("No matches found for pattern " + p);
 				}
-				
 			}
-
+//			System.out.flush();
 		}
 	}
 }
