@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class PrefixMatcher {
@@ -156,6 +157,9 @@ public class PrefixMatcher {
 
 				double asStart = System.nanoTime();
 				LinkedList<String> arrayResults = array.search(p);
+				if(arrayResults!=null){
+					Collections.sort(arrayResults);
+				}
 				double asElapsed = System.nanoTime() - asStart;
 				
 				// print output
