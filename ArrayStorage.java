@@ -9,6 +9,21 @@ public class ArrayStorage {
 		l = new LinkedList<String>();
 	}
 
+public long calculateStorage() {
+long store = 8;
+for (String s : l) {
+int strstore = s.length()*2+38;
+if(strstore%8 == 0) {
+store += strstore;
+}
+else {
+strstore += (8-(strstore%8));
+store += strstore;
+}
+}
+return store;
+}
+
 	public void add(String s) {
 		if (s == null) {
 			return;
