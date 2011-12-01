@@ -28,7 +28,6 @@ public class PrefixMatcher {
 		FileReader in = null;
 
 		Trie trie = new Trie();
-		
 		int trieWordCount = 0;
 		double trieElapsedTime;
 		long trieBytes;
