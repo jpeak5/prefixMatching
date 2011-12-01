@@ -156,9 +156,9 @@ public class PrefixMatcher {
 
 				double asStart = System.nanoTime();
 				LinkedList<String> arrayResults = array.search(p);
-				if(arrayResults!=null){
-					Collections.sort(arrayResults);
-				}
+				//if(arrayResults!=null){
+				//	Collections.sort(arrayResults);
+				//}
 				double asElapsed = System.nanoTime() - asStart;
 				
 				// print output
