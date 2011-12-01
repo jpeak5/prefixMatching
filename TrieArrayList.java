@@ -29,11 +29,9 @@ public class TrieArrayList {
 		char letter; // 2 bytes
 		Node parent; // 4 bytes (reference field)
 		ArrayList<Node> children = new ArrayList<Node>();// O(26*4 bytes)??
-
-		public Node() {
-
-		}
-
+		
+		public Node(){}
+		
 		public Node(char c) {
 			this.letter = c;
 		}
