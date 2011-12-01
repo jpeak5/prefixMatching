@@ -29,25 +29,37 @@ public class PrefixMatcher {
 	public static void main(String[] args) throws IOException {
 
 		if (args.length != 1) {
-			System.out
-					.println("Usage: give the name of a single dictionary file as the sole argument");
+			System.out.println("Usage: give the name of a single dictionary file as the sole argument");
+			System.exit(-1);
 		}
-		TrieArrayList trieArrayList = new TrieArrayList();
+		
 		String s;
 		BufferedReader br = null;
 		FileReader in = null;
+		
+		
+		TrieArrayList trieArrayList = new TrieArrayList();
 
-		int count = 0;
-		double start = System.nanoTime();
+
 		try {
+			int count = 0;
+			double start = System.nanoTime();
 			File file = new File(args[0]);
 			in = new FileReader(file);
 			br = new BufferedReader(in);
 			System.out.print("Loading file " + args[0] + "...");
+			
 			while ((s = br.readLine()) != null) {
 				trieArrayList.insert(s, trieArrayList.root);
 				count++;
 			}
+			
+			System.out.print("Trie insert Done.\n");
+			
+			double elapsed = (System.nanoTime() - start);
+			System.out.print(count + " words loaded in " + elapsed / 1000 + " microseconds\n");
+			
+
 			// test for insertion correctness by calling preorder on root
 			// System.out.println(trieArrayList.preorder(trieArrayList.root, new
 			// StringBuffer()));
@@ -56,10 +68,43 @@ public class PrefixMatcher {
 				in.close();
 			}
 		}
-		System.out.print("Done.\n");
-		double elapsed = (System.nanoTime() - start);
-		System.out.print(count + " words loaded in " + elapsed / 1000000000
-				+ " seconds\n");
+		//now read in the array storage
+		ArrayStorage as = new ArrayStorage();
+		
+
+		
+		try {
+			
+			File file = new File(args[0]);
+			in = new FileReader(file);
+			br = new BufferedReader(in);
+			System.out.print("Loading file " + args[0] + "...");
+
+			int asCount = 0;
+			double asStart = System.nanoTime();
+			while ((s = br.readLine()) != null) {
+				as.add(s);
+				asCount++;
+			}
+			double asElapsed = System.nanoTime() - asStart;
+			System.out.print(asCount + " words loaded in " + asElapsed / 1000 + " microseconds\n");
+			
+			//now sort the array storage structure
+			asStart = System.nanoTime();
+			as.sort();
+			asElapsed = System.nanoTime() - asStart;
+			System.out.print("ArrayStorage: "+asCount + " words sorted in " + asElapsed / 1000 + " micro-seconds\n");
+			
+			// test for insertion correctness by calling preorder on root
+			// System.out.println(trieArrayList.preorder(trieArrayList.root, new
+			// StringBuffer()));
+		}finally {
+			if (in != null) {
+				in.close();
+			}
+		}
+		
+		
 		BufferedReader buffy = new BufferedReader(new InputStreamReader(
 				System.in));
 		System.out
@@ -73,9 +118,13 @@ public class PrefixMatcher {
 				System.exit(0);
 			} else {
 
-				start = System.nanoTime();
+				double start = System.nanoTime();
 				ArrayList<String> list = trieArrayList.search(p);
-				elapsed = (System.nanoTime() - start);
+				double elapsed = (System.nanoTime() - start);
+				
+				double asStart = System.nanoTime();
+				LinkedList <String> results = as.search(p);
+				double asElapsed = System.nanoTime() - start;
 				if (list != null) {
 					for (String m : list) {
 						System.out.println(m);
@@ -97,20 +146,28 @@ public class PrefixMatcher {
 //						i++;
 //					}
 					System.out.print(nodes.size()+" nodes required to store the result set (root node is counted but not output) \n{");
-					int i;
-					for(i=0;i<nodes.size()-1;i++) {
-						char l = nodes.get(i).letter;
-						System.out.print(l);
-						System.out.print(", ");
-						if(i%10 ==0){
-							System.out.print("\n");
-						}
-					}
-					System.out.print(nodes.get(i).letter+"\n}\n");
+//					int i;
+//					for(i=0;i<nodes.size()-1;i++) {
+//						char l = nodes.get(i).letter;
+//						System.out.print(l);
+//						System.out.print(", ");
+//						if(i%10 ==0){
+//							System.out.print("\n");
+//						}
+//					}
+//					System.out.print(nodes.get(i).letter+"\n}\n");
 //					 System.out.println("results stored in "+(nodes.size()-1 + p.length()-1)+" nodes");
 				} else {
 					System.out.println("No matches found for pattern " + p);
 				}
+				System.out.println("ArrayStorage Results:");
+				if(results !=null){
+				for(String str : results){
+					System.out.println(str);
+				}
+				System.out.println(results.size() +" results found in "+asElapsed/1000+" microseconds");
+				}
+				
 			}
 //			System.out.flush();
 		}
