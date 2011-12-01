@@ -1,18 +1,19 @@
-import java.util.List;
+import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Collections;
 
 public class ArrayStorage {
-	private List<String> l;
+private String[] strs;
+private int end;
 
 	public ArrayStorage() {
-		l = new LinkedList<String>();
+strs = new String[50];
+end=0;
 	}
 
 public long calculateStorage() {
 long store = 8;
-for (String s : l) {
-int strstore = s.length()*2+38;
+for (int i=0; i<end; i++) {
+int strstore = strs[i].length()*2+38;
 if(strstore%8 == 0) {
 store += strstore;
 }
@@ -28,20 +29,33 @@ return store;
 		if (s == null) {
 			return;
 		}
-		l.add(s);
+if(end == strs.length) {
+String[] strs2 = new String[(int) (strs.length*1.3)];
+for(int i = 0; i<strs.length; i++) {
+strs2[i] = strs[i];
+}
+strs = strs2;
+}
+strs[end] = s;
+end++;
 	}
 
 	public void sort() {
-		Collections.sort(l);
+String[] strs2 = new String[end];
+for(int i = 0; i<end; i++) {
+strs2[i] = strs[i];
+}
+strs = strs2;
+Arrays.sort(strs);
 	}
 
 	public LinkedList<String> search(String pre) {
 		int low = 0;
-		int high = l.size() - 1;
+		int high = end - 1;
 		int index = -1;
 		while (low <= high) {
 			int mid = (low + high) / 2;
-			String s = l.get(mid);
+			String s = strs[mid];
 			if (s.length() >= pre.length()) {
 				String t = "";
 				for (int i = 0; i < pre.length(); i++) {
@@ -65,7 +79,7 @@ return store;
 		}
 		if (index != -1) {
 			LinkedList<String> ll = new LinkedList<String>();
-			ll.add(l.get(index));
+			ll.add(strs[index]);
 			int flag = 1;
 			int index2 = index;
 			while (flag == 1) {
@@ -73,7 +87,7 @@ return store;
 				if (index2 < 0) {
 					break;
 				}
-				String s = l.get(index2);
+				String s = strs[index2];
 				if (s.length() >= pre.length()) {
 					String t = "";
 					for (int i = 0; i < pre.length(); i++) {
@@ -93,10 +107,10 @@ return store;
 			index2 = index;
 			while (flag == 1) {
 				index2++;
-				if (index2 > l.size() - 1) {
+				if (index2 > end - 1) {
 					break;
 				}
-				String s = l.get(index2);
+				String s = strs[index2];
 				if (s.length() >= pre.length()) {
 					String t = "";
 					for (int i = 0; i < pre.length(); i++) {
@@ -128,5 +142,6 @@ return store;
 		System.out.println(as.search("ha"));
 		System.out.println(as.search("hell"));
 		System.out.println(as.search("hahaha"));
+System.out.println(as.search("roar"));
 	}
 }

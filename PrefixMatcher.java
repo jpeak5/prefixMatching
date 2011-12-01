@@ -28,7 +28,6 @@ public class PrefixMatcher {
 		FileReader in = null;
 
 		Trie trie = new Trie();
-		
 		int trieWordCount = 0;
 		double trieElapsedTime;
 		long trieBytes;
@@ -36,12 +35,11 @@ public class PrefixMatcher {
 		try {
 			System.out.println("Trie");
 			
-			double start = System.nanoTime();
 			File file = new File(args[0]);
 			in = new FileReader(file);
 			br = new BufferedReader(in);
 			System.out.print("Loading file " + args[0] + "...\n");
-
+			double start = System.nanoTime();
 			while ((s = br.readLine()) != null) {
 				trie.insert(s, trie.root);
 				trieWordCount++;
@@ -153,14 +151,14 @@ public class PrefixMatcher {
 				// perform query
 				double start = System.nanoTime();
 				ArrayList<String> trieResults = trie.search(p);
-				double elapsed = (System.nanoTime() - start);
+				double elapsed = (System.nanoTime() - start)/1000;
 
 				double asStart = System.nanoTime();
 				LinkedList<String> arrayResults = array.search(p);
-				if(arrayResults!=null){
-					Collections.sort(arrayResults);
-				}
-				double asElapsed = System.nanoTime() - asStart;
+				//if(arrayResults!=null){
+				//	Collections.sort(arrayResults);
+				//}
+				double asElapsed = (System.nanoTime() - asStart)/1000;
 				
 				// print output
 				int rows=0;
