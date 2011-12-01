@@ -25,7 +25,7 @@ public class TrieArrayList {
 			}
 		}
 
-		int key; // 4 bytes
+		int terminator; // 4 bytes
 		char letter; // 2 bytes
 		Node parent; // 4 bytes (reference field)
 		ArrayList<Node> children = new ArrayList<Node>();// O(26*4 bytes)??
@@ -41,13 +41,13 @@ public class TrieArrayList {
 		public Node(Node leaf) {
 			this.parent = leaf;
 
-			this.key = -1;
+			this.terminator = -1;
 		}
 
 		public Node(char letter, Node parent) {
 			this.parent = parent;
 			this.letter = letter;
-			this.key = (int) this.letter;
+			this.terminator = (int) this.letter;
 		}
 	}
 
@@ -125,7 +125,7 @@ public class TrieArrayList {
 		if(node == null){
 			return null;
 		}else{
-			if(node.key!=-1){
+			if(node.terminator!=-1){
 			nodes.add(node);
 			}
 //			System.out.println(">>"+node.letter);
