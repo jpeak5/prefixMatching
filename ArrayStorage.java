@@ -13,7 +13,7 @@ end=0;
 public long calculateStorage() {
 long store = 8;
 for (int i=0; i<end; i++) {
-int strstore = strs[i].length()*2+38;
+int strstore = strs[i].length()*2+8;
 if(strstore%8 == 0) {
 store += strstore;
 }
