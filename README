@@ -2,6 +2,14 @@ Anthony Legendre
 Jason Peak
 Michael Taboada
 
+Submission Contents:
+PrefixMatcher.java
+ArrayStorage.java
+Trie.java
+dictionary.txt
+
+Explanation of the assignment, files, and other formal bs to make this look real good. (Coming soon!)
+
 to compile this program, type 
 
 	javac *.java 
