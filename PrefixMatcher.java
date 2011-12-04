@@ -202,7 +202,7 @@ public class PrefixMatcher {
 				str+=" microsec";
 				str+="\n";
 				sb.append(str);
-				
+				String totals = sb.toString();
 				sb.append(hardLine('-', 80)+"\n");
 				
 				for (int i = 0; i < rows; i++) {
@@ -221,7 +221,9 @@ public class PrefixMatcher {
 					}
 					str+="\n";
 					sb.append(str);
-				}System.out.println(sb.toString());
+				}
+				sb.append(totals);
+				System.out.println(sb.toString());
 
 			}
 
