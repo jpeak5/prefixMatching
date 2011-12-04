@@ -59,6 +59,7 @@ public class Trie {
 				word.add(climber);
 				climber = climber.parent;
 			}
+			//reverse the order to make a propoer word sequence
 			ArrayList<Node>rList = new ArrayList<Node>();
 			for(int i=word.size()-1;i>=0;i--){
 				rList.add(word.get(i));
