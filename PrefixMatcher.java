@@ -156,7 +156,7 @@ public class PrefixMatcher {
 
 				// perform query
 				double start = System.nanoTime();
-				ArrayList<String> trieResults = trie.search(p);
+				ArrayList<ArrayList<Trie.Node>> trieResults = trie.search(p);
 				double elapsed = (System.nanoTime() - start)/1000;
 
 				double asStart = System.nanoTime();
@@ -208,7 +208,10 @@ public class PrefixMatcher {
 				for (int i = 0; i < rows; i++) {
 					str = "";
 					if (trieResults.get(i) != null) {
-						str += trieResults.get(i);
+						ArrayList<Trie.Node>word = trieResults.get(i);
+						for(Trie.Node n : word){
+							str += n.letter;
+						}
 					}
 					str += hardLine(' ', 40 - str.length());
 					str += "|";

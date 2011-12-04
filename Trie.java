@@ -51,7 +51,7 @@ public class Trie {
 		}
 	}
 
-	public ArrayList<ArrayList<Node>> preOrder(Node node, ArrayList<ArrayList<Node>>aList){
+	public ArrayList<ArrayList<Node>> preorder(Node node, ArrayList<ArrayList<Node>>aList){
 		if (node.terminator == -1) {
 			ArrayList<Node> word = new ArrayList<Node>();
 			Node climber = node;
@@ -67,7 +67,7 @@ public class Trie {
 		}
 		if (node.children != null) {
 			for (Node n : node.children) {
-				preOrder(n, aList);
+				preorder(n, aList);
 			}
 		}
 		return aList;
@@ -107,31 +107,13 @@ public class Trie {
 
 	}
 
-	private ArrayList<String> getFingers(Node node, ArrayList<String> list) {
-		if(node.terminator == -1){
-			StringBuffer word = new StringBuffer();
-			Node climber = node;
-			while (climber.parent != null) {
-				word.append(climber.letter);
-				climber = climber.parent;
-			}
-			list.add(word.reverse().toString());
-		}
-		if (node.children.size() > 0) {
-			for (Node n : node.children) {
-				getFingers(n, list);
-			}
-		} 
-		return list;
-	}
-	
-	public ArrayList<String> search(String p) {
+	public ArrayList<ArrayList<Node>> search(String p) {
 
 		Node node = getSubRoot(p);
 		if (node == null) {
 			return null;
 		} else {
-			ArrayList<String> list = getFingers(node, new ArrayList<String>());
+			ArrayList<ArrayList<Node>> list = preorder(node, new ArrayList<ArrayList<Node>>());
 			return list;
 		}
 	}
