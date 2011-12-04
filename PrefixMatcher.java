@@ -31,10 +31,10 @@ public class PrefixMatcher {
 		int trieWordCount = 0;
 		double trieElapsedTime;
 		long trieBytes;
-		
+
 		try {
 			System.out.println("Trie");
-			
+
 			File file = new File(args[0]);
 			in = new FileReader(file);
 			br = new BufferedReader(in);
@@ -45,11 +45,8 @@ public class PrefixMatcher {
 				trieWordCount++;
 			}
 
-			trieElapsedTime = ((System.nanoTime() - start)/1000);
+			trieElapsedTime = ((System.nanoTime() - start) / 1000);
 			trieBytes = trie.calculateStorage();
-			
-			
-			
 
 		} finally {
 			if (in != null) {
@@ -58,7 +55,7 @@ public class PrefixMatcher {
 		}
 		// now read in the array storage
 		ArrayStorage array = new ArrayStorage();
-		
+
 		int arrayWordCount = 0;
 		double arrayElapsedTime;
 		long arrayBytes;
@@ -78,7 +75,7 @@ public class PrefixMatcher {
 				arrayWordCount++;
 			}
 			array.sort();
-			arrayElapsedTime = ((System.nanoTime() - asStart)/1000);
+			arrayElapsedTime = ((System.nanoTime() - asStart) / 1000);
 			arrayBytes = array.calculateStorage();
 
 		} finally {
@@ -86,50 +83,48 @@ public class PrefixMatcher {
 				in.close();
 			}
 		}
-		
-		
-		
-		//print initialization stats
+
+		// print initialization stats
 		StringBuffer sb = new StringBuffer();
-		sb.append(hardLine('*', 80)+"\n");
+		sb.append(hardLine('*', 80) + "\n");
 		String str = "";
-		str = hardLine(' ',15-str.length())+"Trie";
-		str += hardLine(' ',40-str.length());
-		str+="|";
-		str+=hardLine(' ', 10)+"Array";
-		str+="\n";
+		str = hardLine(' ', 15 - str.length()) + "Trie";
+		str += hardLine(' ', 40 - str.length());
+		str += "|";
+		str += hardLine(' ', 10) + "Array";
+		str += "\n";
 		sb.append(str);
-		
-		str="Word Count";
-		str += hardLine(' ',15-str.length());
-		str+=String.format("%,d",trieWordCount);
-		str += hardLine(' ',40-str.length());
-		str+="|";
+
+		str = "Word Count";
+		str += hardLine(' ', 15 - str.length());
+		str += String.format("%,d", trieWordCount);
+		str += hardLine(' ', 40 - str.length());
+		str += "|";
 		str += hardLine(' ', 10);
-		str+=String.format("%,d",arrayWordCount);
-		str+="\n";
+		str += String.format("%,d", arrayWordCount);
+		str += "\n";
 		sb.append(str);
-		
-		str="Init Time";
-		str += hardLine(' ',15-str.length());
-		str+=String.format("%,.0f",trieElapsedTime);
-		str += hardLine(' ',40-str.length());
-		str+="|";
+
+		str = "Init Time";
+		str += hardLine(' ', 15 - str.length());
+		str += String.format("%,.0f", trieElapsedTime);
+		str += hardLine(' ', 40 - str.length());
+		str += "|";
 		str += hardLine(' ', 10);
-		str+=String.format("%,.0f",arrayElapsedTime);
-		str+="\n";
+		str += String.format("%,.0f", arrayElapsedTime);
+		str += "\n";
 		sb.append(str);
-		
-		str="Bytes";
-		str += hardLine(' ',15-str.length());
-		str+=String.format("%,d",trieBytes);
-		str += hardLine(' ',40-str.length());
-		str+="|";
+
+		str = "Bytes";
+		str += hardLine(' ', 15 - str.length());
+		str += String.format("%,d", trieBytes);
+		str += hardLine(' ', 40 - str.length());
+		str += "|";
 		str += hardLine(' ', 10);
-		str+=String.format("%,d",arrayBytes);
-		str+="\n";
+		str += String.format("%,d", arrayBytes);
+		str += "\n";
 		sb.append(str);
-		sb.append(hardLine('*', 80)+"\n");
+		sb.append(hardLine('*', 80) + "\n");
 		System.out.print(sb.toString());
 
 		// debug
@@ -151,54 +146,55 @@ public class PrefixMatcher {
 				// perform query
 				double start = System.nanoTime();
 				ArrayList<String> trieResults = trie.search(p);
-				double elapsed = (System.nanoTime() - start)/1000;
+				double elapsed = (System.nanoTime() - start) / 1000;
 
 				double asStart = System.nanoTime();
 				LinkedList<String> arrayResults = array.search(p);
-				//if(arrayResults!=null){
-				//	Collections.sort(arrayResults);
-				//}
-				double asElapsed = (System.nanoTime() - asStart)/1000;
-				
+				// if(arrayResults!=null){
+				// Collections.sort(arrayResults);
+				// }
+				double asElapsed = (System.nanoTime() - asStart) / 1000;
+
 				// print output
-				int rows=0;
-				if(trieResults != null && arrayResults !=null){
+				int rows = 0;
+				if (trieResults != null && arrayResults != null) {
 					rows = Math.max(arrayResults.size(), trieResults.size());
 				}
 				sb = new StringBuffer();
-				sb.append(hardLine('*', 80)+"\n");
+				sb.append(hardLine('*', 80) + "\n");
 				str = "";
-				str = hardLine(' ',15-str.length())+"Trie";
-				str += hardLine(' ',40-str.length());
-				str+="|";
-				str+=hardLine(' ', 10)+"Array";
-				str+="\n";
+				str = hardLine(' ', 15 - str.length()) + "Trie";
+				str += hardLine(' ', 40 - str.length());
+				str += "|";
+				str += hardLine(' ', 10) + "Array";
+				str += "\n";
 				sb.append(str);
-				
-				str="Matches";
-				str += hardLine(' ',15-str.length());
-				str+=trieResults != null ? trieResults.size() : 0;
-				str += hardLine(' ',40-str.length());
-				str+="|";
+
+				str = "Matches";
+				str += hardLine(' ', 15 - str.length());
+				str += trieResults != null ? trieResults.size() : 0;
+				str += hardLine(' ', 40 - str.length());
+				str += "|";
 				str += hardLine(' ', 10);
-				str+=arrayResults != null ? arrayResults.size() : 0;
-				str+="\n";
+				str += arrayResults != null ? arrayResults.size() : 0;
+				str += "\n";
 				sb.append(str);
-				
-				str="Time";
-				str += hardLine(' ',15-str.length());
-				str+=String.format("%,.0f", elapsed);
-				str+=" microsec";
-				str += hardLine(' ',40-str.length());
-				str+="|";
+
+				str = "Time";
+				str += hardLine(' ', 15 - str.length());
+				str += String.format("%,.0f", elapsed);
+				str += " microsec";
+				str += hardLine(' ', 40 - str.length());
+				str += "|";
 				str += hardLine(' ', 10);
-				str+=String.format("%,.0f", asElapsed);
-				str+=" microsec";
-				str+="\n";
+				str += String.format("%,.0f", asElapsed);
+				str += " microsec";
+				str += "\n";
 				sb.append(str);
-				
-				sb.append(hardLine('-', 80)+"\n");
-				
+				String totals = sb.toString();
+
+				sb.append(hardLine('-', 80) + "\n");
+
 				for (int i = 0; i < rows; i++) {
 					str = "";
 					if (trieResults.get(i) != null) {
@@ -210,9 +206,11 @@ public class PrefixMatcher {
 					if (arrayResults.get(i) != null) {
 						str += arrayResults.get(i);
 					}
-					str+="\n";
+					str += "\n";
 					sb.append(str);
-				}System.out.println(sb.toString());
+				}
+				sb.append(totals);
+				System.out.println(sb.toString());
 
 			}
 
