@@ -51,41 +51,29 @@ public class Trie {
 		}
 	}
 
-	// preorder walk
-	public StringBuffer preorder(Node node, StringBuffer sb) {
+	public ArrayList<ArrayList<Node>> preOrder(Node node, ArrayList<ArrayList<Node>>aList){
 		if (node.terminator == -1) {
-			StringBuffer word = new StringBuffer();
+			ArrayList<Node> word = new ArrayList<Node>();
 			Node climber = node;
 			while (climber.parent != null) {
-				word.append(climber.letter);
+				word.add(climber);
 				climber = climber.parent;
 			}
-			sb.append(word.reverse() + "\n");
+			ArrayList<Node>rList = new ArrayList<Node>();
+			for(int i=word.size()-1;i>=0;i--){
+				rList.add(word.get(i));
+			}
+			aList.add(rList);
 		}
 		if (node.children != null) {
 			for (Node n : node.children) {
-				preorder(n, sb);
+				preOrder(n, aList);
 			}
 		}
-		return sb;
+		return aList;
 	}
-	public ArrayList<String> getFingers(Node node, ArrayList<String> list) {
-		if(node.terminator == -1){
-			StringBuffer word = new StringBuffer();
-			Node climber = node;
-			while (climber.parent != null) {
-				word.append(climber.letter);
-				climber = climber.parent;
-			}
-			list.add(word.reverse().toString());
-		}
-		if (node.children.size() > 0) {
-			for (Node n : node.children) {
-				getFingers(n, list);
-			}
-		} 
-		return list;
-	}
+	
+
 
 	public void insert(String s, Node node) {
 		char c = s.charAt(0);
@@ -119,6 +107,24 @@ public class Trie {
 
 	}
 
+	private ArrayList<String> getFingers(Node node, ArrayList<String> list) {
+		if(node.terminator == -1){
+			StringBuffer word = new StringBuffer();
+			Node climber = node;
+			while (climber.parent != null) {
+				word.append(climber.letter);
+				climber = climber.parent;
+			}
+			list.add(word.reverse().toString());
+		}
+		if (node.children.size() > 0) {
+			for (Node n : node.children) {
+				getFingers(n, list);
+			}
+		} 
+		return list;
+	}
+	
 	public ArrayList<String> search(String p) {
 
 		Node node = getSubRoot(p);
@@ -130,7 +136,7 @@ public class Trie {
 		}
 	}
 
-	public Node getSubRoot(String p) {
+	private Node getSubRoot(String p) {
 		Node node = root;
 		while (p.length() > 0) {
 			char c = p.charAt(0);
@@ -149,7 +155,7 @@ public class Trie {
 
 
 
-	public ArrayList<Node> getSubtree(Node node, ArrayList<Node> nodes) {
+	private ArrayList<Node> getSubtree(Node node, ArrayList<Node> nodes) {
 		// using a preorder traversal to visit each node
 		if (node == null) {
 			return null;

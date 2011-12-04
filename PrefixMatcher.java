@@ -134,6 +134,12 @@ public class PrefixMatcher {
 
 		// debug
 		// System.out.println(trie.preorder(trie.root, new StringBuffer()));
+//		ArrayList<ArrayList<Trie.Node>> aList = trie.preOrder(trie.root, new ArrayList<ArrayList<Trie.Node>>());
+//		for(ArrayList<Trie.Node> a : aList){
+//			for(Trie.Node n : a){
+//				System.out.print(n.letter);
+//			}System.out.print("\n");
+//		}
 
 		BufferedReader buffy = new BufferedReader(new InputStreamReader(
 				System.in));
