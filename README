@@ -8,9 +8,18 @@ ArrayStorage.java
 Trie.java
 dictionary.txt
 
-Explanation of the assignment, files, and other formal bs to make this look real good. (Coming soon!)
 
-to compile this program, type 
+
+Essentially, this program takes a prefix input and returns the results using an Array-based storage class and a Trie-based storage class. After receiving the input, the program runs these two implementations simultaneously so that we may compare their speed and space efficiency. 
+
+ArrayStorage.java utilizes an array of strings, which can expand to fit all the strings needed by any given list of words. The structure uses binary search in an alphabetically sorted text file to find the range of words that match the prefix input. This range of words is added to a linked list and the list is displayed as output.
+
+Trie.java is a tree of node objects in which each node contains an ArrayList containing references to all the children of the node in addition to a single character key and an indication of the node's status as a leaf. (Whether or not it is a leaf.) At the root of the Trie, the structure searches for matches by starting with the first character in the prefix. If a match is found in the ArrayList containing the node's childeren, the structure uses binary search in the ArrayLists of children for the next characters in the search query until we fail. If the structure succeeds in matching all of the characters of input, the last node object encountered in the search is used as the root of the subtree of word matches. Then, the structure recursively traverses the subtree (subTrie) and reverse the results to produce the word match.
+
+
+
+Instructions:
+To compile this program, type 
 
 	javac *.java 
 
