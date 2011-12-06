@@ -10,7 +10,7 @@ dictionary.txt
 
 
 Essentially, this program takes a prefix input and returns the results using an Array-based storage class and a 
-Trie-based storage class. After receiving the input, the program runs these two implementations simultaneously so that 
+Trie-based storage class. After receiving the input, the program runs these two implementations in sequence so that 
 we may compare their speed and space efficiency. 
 
 ArrayStorage.java utilizes an array of strings, which can expand to fit all the strings needed by any given list of 
